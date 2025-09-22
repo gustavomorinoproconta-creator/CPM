@@ -2,51 +2,103 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login • Busca</title>
-  <link rel="icon" href="assets/logo.png">
-  <link rel="stylesheet" href="style.css?v=9">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Acesso • CPM</title>
+  <link rel="icon" href="assets/logo.png" />
+  <link rel="stylesheet" href="style.css?v=12" />
 </head>
-<body data-page="auth">
-  <header class="topbar">
+<body class="auth-bg">
+
+  <!-- Barra superior com logo + nome -->
+  <header class="brandbar">
     <div class="brand">
-      <img class="logo" src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
-      <strong>🔎 Busca</strong>
+      <img src="assets/logo.png" alt="Logo" class="brand-logo" />
+      <div class="brand-text">
+        <strong>Safári Diversão • TI</strong>
+        <span>Portal CPM</span>
+      </div>
     </div>
   </header>
 
-  <main class="card narrow">
-    <h1>🔐 Acesso</h1>
-
-    <div class="tabs">
-      <button id="tabLogin" class="active">Entrar</button>
-      <button id="tabRegister">Criar conta</button>
-    </div>
-
-    <div id="paneLogin">
-      <label>E-mail</label>
-      <input id="loginEmail" type="email" autocomplete="username" />
-      <label>Senha</label>
-      <input id="loginPass" type="password" autocomplete="current-password" />
-      <div class="actions">
-        <button id="btnLogin" class="btn primary">Entrar</button>
-        <button id="btnReset" class="btn ghost">Esqueci a senha</button>
+  <!-- Card de autenticação (visualmente bonito) -->
+  <main class="auth-wrapper">
+    <section class="auth-card" data-mode="login">
+      <div class="auth-head">
+        <h1>Bem-vindo</h1>
+        <p class="muted">Acesse com seu e-mail e senha.</p>
       </div>
-    </div>
 
-    <div id="paneRegister" hidden>
-      <label>E-mail</label>
-      <input id="regEmail" type="email" />
-      <label>Senha</label>
-      <input id="regPass" type="password" />
-      <div class="actions">
-        <button id="btnRegister" class="btn primary">Criar conta</button>
+      <!-- Abas -->
+      <div class="segmented" role="tablist" aria-label="Modo de acesso">
+        <button id="tabLogin" class="seg-btn active" role="tab" aria-selected="true">Entrar</button>
+        <button id="tabRegister" class="seg-btn" role="tab" aria-selected="false">Criar conta</button>
       </div>
-    </div>
 
-    <p id="msg" class="muted"></p>
+      <!-- Form -->
+      <form class="auth-form" onsubmit="return false;">
+        <label class="field">
+          <span>E-mail</span>
+          <input id="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required />
+        </label>
+
+        <label class="field">
+          <span>Senha</span>
+          <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </label>
+
+        <!-- Mensagens/erros -->
+        <div id="authMsg" class="auth-msg" hidden></div>
+
+        <!-- Botões de ação (um por modo) -->
+        <div class="actions">
+          <button id="btnLogin" class="btn primary">Entrar</button>
+          <button id="btnRegister" class="btn primary" style="display:none;">Criar conta</button>
+        </div>
+      </form>
+
+      <!-- Rodapé do card -->
+      <footer class="auth-foot">
+        <small>© <span id="year"></span> Safári Diversão • TI</small>
+      </footer>
+    </section>
   </main>
 
-  <script type="module" src="app.js?v=9"></script>
+  <!-- Seu app (lógica de Firebase/Auth/etc) -->
+  <script type="module" src="app.js?v=12"></script>
+
+  <!-- Script leve só para trocar aba e manter compatibilidade de IDs -->
+  <script>
+    (function () {
+      const root = document.querySelector('.auth-card');
+      const tabLogin = document.getElementById('tabLogin');
+      const tabRegister = document.getElementById('tabRegister');
+      const btnLogin = document.getElementById('btnLogin');
+      const btnRegister = document.getElementById('btnRegister');
+      const msg = document.getElementById('authMsg');
+
+      const setMode = (mode) => {
+        root.dataset.mode = mode;
+        const isLogin = mode === 'login';
+        tabLogin.classList.toggle('active', isLogin);
+        tabRegister.classList.toggle('active', !isLogin);
+        tabLogin.setAttribute('aria-selected', String(isLogin));
+        tabRegister.setAttribute('aria-selected', String(!isLogin));
+        btnLogin.style.display = isLogin ? '' : 'none';
+        btnRegister.style.display = isLogin ? 'none' : '';
+        if (msg) { msg.hidden = true; msg.textContent = ''; }
+      };
+
+      tabLogin?.addEventListener('click', () => setMode('login'));
+      tabRegister?.addEventListener('click', () => setMode('register'));
+
+      // Ano no rodapé
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Modo inicial: login
+      setMode('login');
+    })();
+  </script>
 </body>
 </html>
+
+
