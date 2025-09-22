@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Acesso • CPM</title>
   <link rel="icon" href="assets/logo.png" />
-  <link rel="stylesheet" href="style.css?v=13" />
+  <link rel="stylesheet" href="style.css?v=14" />
 </head>
 <body class="auth-bg">
 
-  <!-- Barra superior com logo + nome -->
+  <!-- Barra com logo -->
   <header class="brandbar">
     <div class="brand">
       <img src="assets/logo.png" alt="Logo" class="brand-logo" />
@@ -20,7 +20,6 @@
     </div>
   </header>
 
-  <!-- Card de autenticação (visualmente bonito) -->
   <main class="auth-wrapper">
     <section class="auth-card" data-mode="login">
       <div class="auth-head">
@@ -28,13 +27,11 @@
         <p class="muted">Acesse com seu e-mail e senha.</p>
       </div>
 
-      <!-- Abas -->
       <div class="segmented" role="tablist" aria-label="Modo de acesso">
         <button id="tabLogin" class="seg-btn active" role="tab" aria-selected="true">Entrar</button>
         <button id="tabRegister" class="seg-btn" role="tab" aria-selected="false">Criar conta</button>
       </div>
 
-      <!-- Form -->
       <form class="auth-form" onsubmit="return false;">
         <label class="field">
           <span>E-mail</span>
@@ -46,38 +43,36 @@
           <input id="senha" type="password" autocomplete="current-password" placeholder="••••••••" required />
         </label>
 
-        <!-- Mensagens/erros -->
         <div id="authMsg" class="auth-msg" hidden></div>
 
-        <!-- Botões de ação (um por modo) -->
         <div class="actions">
           <button id="btnLogin" class="btn primary">Entrar</button>
           <button id="btnRegister" class="btn primary" style="display:none;">Criar conta</button>
+          <button id="btnReset" class="btn ghost" style="justify-self:start;">Esqueci a senha</button>
         </div>
       </form>
 
-      <!-- Rodapé do card -->
       <footer class="auth-foot">
         <small>© <span id="year"></span> Safári Diversão • TI</small>
       </footer>
     </section>
   </main>
 
-  <!-- Seu app (lógica de Firebase/Auth/etc) -->
-  <script type="module" src="app.js?v=12"></script>
+  <!-- sua lógica de auth -->
+  <script type="module" src="app.js?v=14"></script>
 
-  <!-- Script leve só para trocar aba e manter compatibilidade de IDs -->
+  <!-- trocar abas -->
   <script>
-    (function () {
-      const root = document.querySelector('.auth-card');
+    (() => {
+      const card = document.querySelector('.auth-card');
       const tabLogin = document.getElementById('tabLogin');
       const tabRegister = document.getElementById('tabRegister');
       const btnLogin = document.getElementById('btnLogin');
       const btnRegister = document.getElementById('btnRegister');
       const msg = document.getElementById('authMsg');
 
-      const setMode = (mode) => {
-        root.dataset.mode = mode;
+      function setMode(mode){
+        card.dataset.mode = mode;
         const isLogin = mode === 'login';
         tabLogin.classList.toggle('active', isLogin);
         tabRegister.classList.toggle('active', !isLogin);
@@ -85,21 +80,18 @@
         tabRegister.setAttribute('aria-selected', String(!isLogin));
         btnLogin.style.display = isLogin ? '' : 'none';
         btnRegister.style.display = isLogin ? 'none' : '';
-        if (msg) { msg.hidden = true; msg.textContent = ''; }
-      };
-
+        if(msg){ msg.hidden = true; msg.textContent=''; }
+      }
       tabLogin?.addEventListener('click', () => setMode('login'));
       tabRegister?.addEventListener('click', () => setMode('register'));
-
-      // Ano no rodapé
       document.getElementById('year').textContent = new Date().getFullYear();
-
-      // Modo inicial: login
       setMode('login');
     })();
   </script>
 </body>
 </html>
+
+
 
 
 
