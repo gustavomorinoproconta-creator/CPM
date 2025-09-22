@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login • Busca</title>
+  <link rel="icon" href="assets/logo.png">
+  <link rel="stylesheet" href="style.css?v=9">
+</head>
+<body data-page="auth">
+  <header class="topbar">
+    <div class="brand">
+      <img class="logo" src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
+      <strong>🔎 Busca</strong>
+    </div>
+  </header>
+
+  <main class="card narrow">
+    <h1>🔐 Acesso</h1>
+
+    <div class="tabs">
+      <button id="tabLogin" class="active">Entrar</button>
+      <button id="tabRegister">Criar conta</button>
+    </div>
+
+    <div id="paneLogin">
+      <label>E-mail</label>
+      <input id="loginEmail" type="email" autocomplete="username" />
+      <label>Senha</label>
+      <input id="loginPass" type="password" autocomplete="current-password" />
+      <div class="actions">
+        <button id="btnLogin" class="btn primary">Entrar</button>
+        <button id="btnReset" class="btn ghost">Esqueci a senha</button>
+      </div>
+    </div>
+
+    <div id="paneRegister" hidden>
+      <label>E-mail</label>
+      <input id="regEmail" type="email" />
+      <label>Senha</label>
+      <input id="regPass" type="password" />
+      <div class="actions">
+        <button id="btnRegister" class="btn primary">Criar conta</button>
+      </div>
+    </div>
+
+    <p id="msg" class="muted"></p>
+  </main>
+
+  <script type="module" src="app.js?v=9"></script>
+</body>
+</html>
